@@ -1,4 +1,3 @@
-
 from django.db import models
 from core.models import TimeStampMixin
 from django.contrib.auth.models import AbstractUser
