@@ -1,4 +1,4 @@
-from asyncio import Condition
+
 from rest_framework import viewsets, generics,status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -120,18 +120,12 @@ class DeviceCheckOutView(generics.CreateAPIView):
     serializer_class = DeviceLogSerializer
     permission_classes = [IsAuthenticated]
     def perform_create(self, serializer):
-        condition = serializer.validated_data.get('checked_out_condition')
         device = serializer.validated_data.get('device')
         if not device.is_available:
-            return Response(
-                {"error": "Device already used by another employee."},
-                status = status.HTTP_400_BAD_REQUEST
-            )
+            raise serializers.ValidationError("Device already used by another employee.")
         device.is_available = False
         device.save()
-        return serializer.save(
-            checked_out_condition = condition
-        )
+        return serializer.save()
 
 class DeviceCheckInView(generics.RetrieveUpdateAPIView):
     queryset = DeviceLog.objects.all()

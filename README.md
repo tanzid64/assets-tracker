@@ -39,6 +39,11 @@ Create an admin account:
 ```bash
   python manage.py createsuperuser
 ```
+Run test::
+
+```bash
+  python manage.py test
+```
 Start the django application::
 
 ```bash

@@ -41,7 +41,7 @@ class Device(TimeStampMixin):
 class DeviceLog(TimeStampMixin):
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='logs')
     checked_out_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='deviceHistory')
-    checked_out_condition = models.CharField(max_length=255) # Device Condition
+    checked_out_condition = models.CharField(max_length=255, null = True, blank=True) # Device Condition
     checked_in_condition = models.CharField(max_length=255, null=True, blank=True) # Device Condition after return
 
     def __str__(self):
