@@ -67,6 +67,7 @@ class CompanyView(viewsets.ModelViewSet):
 class EmployeeView(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         try:
@@ -87,6 +88,7 @@ class EmployeeView(viewsets.ModelViewSet):
 class DeviceView(viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         try:
             company = Company.objects.get(owner=self.request.user)
@@ -104,6 +106,7 @@ class DeviceView(viewsets.ModelViewSet):
 class DeviceLogView(generics.ListAPIView):
     queryset = DeviceLog.objects.all()
     serializer_class = DeviceLogSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         try:
             company = Company.objects.get(owner=self.request.user)
@@ -115,7 +118,7 @@ class DeviceLogView(generics.ListAPIView):
 class DeviceCheckOutView(generics.CreateAPIView):
     queryset = DeviceLog.objects.all()
     serializer_class = DeviceLogSerializer
-
+    permission_classes = [IsAuthenticated]
     def perform_create(self, serializer):
         condition = serializer.validated_data.get('checked_out_condition')
         device = serializer.validated_data.get('device')
@@ -130,7 +133,7 @@ class DeviceCheckOutView(generics.CreateAPIView):
             checked_out_condition = condition
         )
 
-class DeviceCheckInView(generics.UpdateAPIView):
+class DeviceCheckInView(generics.RetrieveUpdateAPIView):
     queryset = DeviceLog.objects.all()
     serializer_class = DeviceLogSerializer
     permission_classes = [IsAuthenticated]

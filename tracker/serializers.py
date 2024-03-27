@@ -52,6 +52,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context['request'].method == 'PUT':
+            self.fields['email'].required = False
+            self.fields['address'].required = False
+            self.fields['name'].required = False
 
 # Device
 class DeviceSerializer(serializers.ModelSerializer):

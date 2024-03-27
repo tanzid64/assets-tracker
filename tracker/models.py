@@ -1,3 +1,4 @@
+from enum import unique
 from django.db import models
 from core.models import TimeStampMixin
 from django.contrib.auth.models import AbstractUser
@@ -21,7 +22,7 @@ class Company(TimeStampMixin):
     
 class Employee(TimeStampMixin):
     name = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     address = models.CharField(max_length=255)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='employees')
 
@@ -30,7 +31,7 @@ class Employee(TimeStampMixin):
     
 class Device(TimeStampMixin):
     name = models.CharField(max_length=255)
-    serial_no = models.CharField(max_length=255)
+    serial_no = models.CharField(max_length=255, unique=True)
     owner = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='devices')
     is_available = models.BooleanField(default=True)
 
