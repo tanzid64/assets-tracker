@@ -14,16 +14,19 @@ class User(TimeStampMixin, AbstractUser):
 
 class Company(TimeStampMixin):
     name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='company')
 
     def __str__(self):
         return self.name
     
 class Employee(TimeStampMixin):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='employee')
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    address = models.CharField(max_length=255)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='employees')
 
     def __str__(self):
-        return self.user.username
+        return self.name
     
 class Device(TimeStampMixin):
     name = models.CharField(max_length=255)
@@ -38,8 +41,8 @@ class DeviceLog(TimeStampMixin):
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='logs')
     checked_out_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='deviceHistory')
     checked_out_condition = models.CharField(max_length=255) # Device Condition
-    checked_in_date = models.DateTimeField(null=True, blank=True)
-    checked_in_condition = models.CharField(max_length=255) # Device Condition after return
+    checked_in_condition = models.CharField(max_length=255, null=True, blank=True) # Device Condition after return
 
     def __str__(self):
-        return f"{self.device.name} - by:{self.checked_out_by.user.username}"
+        return f"{self.device.name} - by:{self.checked_out_by.name}"
+
