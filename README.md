@@ -39,7 +39,7 @@ Create an admin account:
 ```bash
   python manage.py createsuperuser
 ```
-Run test::
+Run test:
 
 ```bash
   python manage.py test
